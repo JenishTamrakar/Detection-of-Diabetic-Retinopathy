@@ -51,13 +51,14 @@ def findMA(image):
 
     # Detect blobs.
     keypoints = detector.detect(green_fundus)
-    df = pd.read_csv("IDRiD_Disease_Grading_Training_Labels.csv")
+    # df = pd.read_csv("IDRiD_Disease_Grading_Training_Labels.csv")
     # create a blank image to mask
     masked_image = image.size
 
     # Draw detected blobs as red circles.
     # cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS ensures the size of the circle corresponds to the size of blob
     im_with_keypoints = cv2.drawKeypoints(image, keypoints, np.array([]), (255, 255, 255), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
+    print(im_with_keypoints)
     image_with_mas = cv2.resize(im_with_keypoints, (1024, 840))
     cv2.imshow('Image With Big MAs', image_with_mas)
     cv2.waitKey(0)
@@ -113,8 +114,7 @@ def findMA(image):
 
     # Draw detected blobs as red circles.
     # cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS ensures the size of the circle corresponds to the size of blob
-    im_with_keypoints1 = cv2.drawKeypoints(image, keypoints1, np.array([]), (255, 255, 255),
-                                          cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
+    im_with_keypoints1 = cv2.drawKeypoints(image, keypoints1, np.array([]), (255, 255, 255), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
     image_with_mas1 = cv2.resize(im_with_keypoints1, (1024, 840))
     cv2.imshow('Image With Big MAs', image_with_mas1)
     cv2.waitKey(0)
@@ -133,7 +133,7 @@ def findMA(image):
     return eye_final
 
 if __name__ == "__main__":
-    pathFolder = "D:/DR_Datasets/CLAHE_imgs/"
+    pathFolder = "D:/DR_Datasets/CLAHE_images/"
     filesArray = [x for x in os.listdir(pathFolder) if os.path.isfile(os.path.join(pathFolder, x))]
     destinationFolder = "D:/DR_Datasets/MAs/"
     if not os.path.exists(destinationFolder):
@@ -142,10 +142,9 @@ if __name__ == "__main__":
         file_name_no_extension = os.path.splitext(file_name)[0]
         fundus = cv2.imread(pathFolder + '/' + file_name)
         # fundus = cv2.imread("D:/DR_Datasets/diabetic_retinopathy/01_dr.JPG")
-        print(fundus)
+        # print(fundus)
         mas = findMA(fundus)
         cv2.imwrite(destinationFolder + file_name_no_extension + "_mas.png", mas)
-        # break
 # pathFolder = "D:/DR_Datasets/CLAHE_imgs/"
 # filesArray = [x for x in os.listdir(pathFolder) if os.path.isfile(os.path.join(pathFolder, x))]
 # MA_Folder = pathFolder+"/MA/"
