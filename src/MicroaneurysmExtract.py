@@ -141,7 +141,6 @@ if __name__ == "__main__":
     for file_name in filesArray:
         file_name_no_extension = os.path.splitext(file_name)[0]
         fundus = cv2.imread(pathFolder + '/' + file_name)
-        # fundus = cv2.imread("D:/DR_Datasets/diabetic_retinopathy/01_dr.JPG")
         # print(fundus)
         mas = findMA(fundus)
         cv2.imwrite(destinationFolder + file_name_no_extension + "_mas.png", mas)
@@ -248,7 +247,6 @@ if __name__ == "__main__":
 #     for file_name in filesArray:
 #         file_name_no_extension = os.path.splitext(file_name)[0]
 #         fundus = cv2.imread(pathFolder + '/' + file_name)
-#         # fundus = cv2.imread("D:/DR_Datasets/diabetic_retinopathy/01_dr.JPG")
 #         # print(fundus)
 #         mas = extract_ma(fundus)
 #         cv2.imwrite(destinationFolder + file_name_no_extension + "_ma.png", mas)

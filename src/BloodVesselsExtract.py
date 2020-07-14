@@ -82,17 +82,20 @@ def add_column_in_csv(input_file, output_file, transform_row):
 
 
 if __name__ == "__main__":
-    pathFolder = "D:/DR_Datasets/CLAHE_images/"
+    # pathFolder = "D:/DR_Datasets/CLAHE_images/"
+    current_directory = os.getcwd()
+    pathFolder = current_directory + "\images/"
     filesArray = [x for x in os.listdir(pathFolder) if os.path.isfile(os.path.join(pathFolder, x))]
 
-    destinationFolder = "D:/DR_Datasets/Blood_vessels/"
-    if not os.path.exists(destinationFolder):
-        os.mkdir(destinationFolder)
+    # destinationFolder = "D:/DR_Datasets/Blood_vessels/"
+    # if not os.path.exists(destinationFolder):
+    #     os.mkdir(destinationFolder)
     lst = []
     for file_name in filesArray:
         file_name_no_extension = os.path.splitext(file_name)[0]
         fundus = cv2.imread(pathFolder + '/' + file_name)
         bloodvessel = extract_bv(fundus)
+        # cv2.imwrite(destinationFolder + file_name_no_extension + "_bloodvessel.png", bloodvessel)
 
         # calculation of density of white pixels representing blood vessels
         n_white_pix = np.sum(bloodvessel == 255)
@@ -107,13 +110,16 @@ if __name__ == "__main__":
         # list of tuples of required data
         lst.append((density_white_pix))
 
+        df2 = pd.DataFrame({'image_name': [file_name_no_extension], 'density_of_blood_vessels': [density_white_pix]})
+        df2.to_csv('records.csv')
+
         # Create a DataFrame object for density of blood vessels
         df1 = pd.DataFrame(lst, columns=['density_of_blood_vessels'])
         # print(df1)
 
-        cv2.imwrite(destinationFolder + file_name_no_extension + "_bloodvessel.png", bloodvessel)
-    header_of_new_col = 'density_of_blood_vessels'
+    # for preparation of training data
+    # header_of_new_col = 'density_of_blood_vessels'
     # Add a list as column
-    add_column_in_csv('C:/Users/Jenish Tamrakar/Desktop/DR/training_sample.csv',
-                      'C:/Users/Jenish Tamrakar/Desktop/DR/training_sample1.csv',
-                      lambda row, line_num: row.append(lst[line_num - 1]))
+    # add_column_in_csv('C:/Users/Jenish Tamrakar/Desktop/DR/training_sample.csv',
+    #                   'C:/Users/Jenish Tamrakar/Desktop/DR/training_sample1.csv',
+    #                   lambda row, line_num: row.append(lst[line_num - 1]))
