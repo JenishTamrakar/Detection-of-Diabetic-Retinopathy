@@ -1,4 +1,4 @@
-﻿,SN,image_name,density_of_blood_vessels,no_of_microaneurysms,no_of_haemorrhages,Diabetic_retinopathy_status,Diabetic_retinopathy_grade,Severity
-0,0,IDRiD_210_clahe,0.07438727,18,5,Yes,3,Severe
-0,0,IDRiD_077_clahe,0.039585992,38,1,Yes,4,Very Severe
-0,0,IDRiD_111_clahe,0.018857662617390573,0,1,No,0,Normal
+﻿,Patient_ID,Name,Gender,Age,image_name,density_of_blood_vessels,no_of_microaneurysms,no_of_haemorrhages,Diabetic_retinopathy_status,Diabetic_retinopathy_grade,Severity
+0,10,John Adam,Male,55,IDRiD_210_clahe,0.07438727,18,5,Yes,3,Severe
+0,121,Alisha Shrestha,Female,65,IDRiD_077_clahe,0.039585992,38,1,Yes,4,Very Severe
+0,20,Test,Male,32,IDRiD_111_clahe,0.018857663,0,1,No,0,Normal

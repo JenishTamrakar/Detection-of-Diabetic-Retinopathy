@@ -1,0 +1,5 @@
+<RCC>
+  <qresource prefix="images">
+    <file>Diabetic_Retinopathy.jpg</file>
+  </qresource>
+</RCC>
