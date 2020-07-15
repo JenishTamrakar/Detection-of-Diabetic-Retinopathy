@@ -95,7 +95,7 @@
         </property>
         <layout class="QGridLayout" name="gridLayout_2">
          <item row="3" column="0">
-          <widget class="QPushButton" name="btnExit">
+          <widget class="QPushButton" name="pushButton">
            <property name="maximumSize">
             <size>
              <width>16777215</width>
@@ -253,7 +253,7 @@
                </widget>
               </item>
               <item>
-               <widget class="QLineEdit" name="lineEdit_2">
+               <widget class="QLineEdit" name="txtName">
                 <property name="maximumSize">
                  <size>
                   <width>150</width>
@@ -358,7 +358,7 @@
                </widget>
               </item>
               <item>
-               <widget class="QLineEdit" name="lineEdit_3">
+               <widget class="QLineEdit" name="txtAge">
                 <property name="maximumSize">
                  <size>
                   <width>150</width>
@@ -402,7 +402,7 @@
                </widget>
               </item>
               <item>
-               <widget class="QLineEdit" name="lineEdit_4">
+               <widget class="QLineEdit" name="txtImage">
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                   <horstretch>0</horstretch>
@@ -459,7 +459,7 @@
                </widget>
               </item>
               <item>
-               <widget class="QLineEdit" name="lineEdit">
+               <widget class="QLineEdit" name="txtPatId">
                 <property name="maximumSize">
                  <size>
                   <width>150</width>
@@ -548,7 +548,7 @@
                </widget>
               </item>
               <item>
-               <widget class="QLineEdit" name="lineEdit_5">
+               <widget class="QLineEdit" name="txtGrade">
                 <property name="maximumSize">
                  <size>
                   <width>30</width>
@@ -577,7 +577,7 @@
                </widget>
               </item>
               <item>
-               <widget class="QLineEdit" name="lineEdit_7">
+               <widget class="QLineEdit" name="txtDr">
                 <property name="maximumSize">
                  <size>
                   <width>50</width>

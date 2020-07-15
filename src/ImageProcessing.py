@@ -78,7 +78,10 @@ class ImageProcessing:
         # path = "D:/DR_Datasets/healthy/06_h.JPG"
 
     if __name__ == "__main__":
-        path = "D:/DR_Datasets/B. Disease Grading/1. Original Images/a. Training Set\IDRiD_111.jpg"
+        df = pd.read_csv("records.csv")
+        path = df.at[0, 'filepath']
+        # print(path)
+        # path = "D:/DR_Datasets/B. Disease Grading/1. Original Images/a. Training Set\IDRiD_111.jpg"
         # pathFolder = "D:/DR_Datasets/B. Disease Grading/1. Original Images/a. Training Set/"
         # filesArray = [x for x in os.listdir(pathFolder) if os.path.isfile(os.path.join(pathFolder, x))]
         # print(filesArray)
@@ -115,6 +118,13 @@ class ImageProcessing:
         cv2.destroyAllWindows()
         filename_w_extension = os.path.basename(path)
         file_name_no_extension, file_extension = os.path.splitext(filename_w_extension)
+        # adding records into dataframe and storing in csv file
+        df2 = pd.read_csv(current_directory + '/records.csv')
+        df2["image_name"] = filename_w_extension
+        # Delete the "Area" column from the dataframe
+        df2 = df2.drop("filepath", axis=1)
+        df2 = df2.drop("Unnamed: 0", axis=1)
+        df2.to_csv("records.csv", index=False)
 
         cv2.imwrite(folder + file_name_no_extension + "_clahe.png", clahe_image)
             # canny edge detection start

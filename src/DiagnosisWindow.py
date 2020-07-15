@@ -6,7 +6,7 @@
 #
 # WARNING! All changes made in this file will be lost!
 import os
-
+import pandas as pd
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 # from src.Ui_MainWindow import Ui_MainWindow
@@ -146,14 +146,14 @@ class DiagnosisWindow(object):
         self.label_2.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_2.setObjectName("label_2")
         self.horizontalLayout_2.addWidget(self.label_2)
-        self.lineEdit_2 = QtWidgets.QLineEdit(self.frame_5)
-        self.lineEdit_2.setMaximumSize(QtCore.QSize(150, 16777215))
+        self.txtName = QtWidgets.QLineEdit(self.frame_5)
+        self.txtName.setMaximumSize(QtCore.QSize(150, 16777215))
         font = QtGui.QFont()
         font.setFamily("Times New Roman")
         font.setPointSize(10)
-        self.lineEdit_2.setFont(font)
-        self.lineEdit_2.setObjectName("lineEdit_2")
-        self.horizontalLayout_2.addWidget(self.lineEdit_2)
+        self.txtName.setFont(font)
+        self.txtName.setObjectName("txtName")
+        self.horizontalLayout_2.addWidget(self.txtName)
         self.gridLayout_6.addLayout(self.horizontalLayout_2, 2, 0, 1, 1)
         self.horizontalLayout_3 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_3.setObjectName("horizontalLayout_3")
@@ -195,14 +195,14 @@ class DiagnosisWindow(object):
         self.label_6.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_6.setObjectName("label_6")
         self.horizontalLayout_4.addWidget(self.label_6)
-        self.lineEdit_3 = QtWidgets.QLineEdit(self.frame_5)
-        self.lineEdit_3.setMaximumSize(QtCore.QSize(150, 16777215))
+        self.txtAge = QtWidgets.QLineEdit(self.frame_5)
+        self.txtAge.setMaximumSize(QtCore.QSize(150, 16777215))
         font = QtGui.QFont()
         font.setFamily("Times New Roman")
         font.setPointSize(10)
-        self.lineEdit_3.setFont(font)
-        self.lineEdit_3.setObjectName("lineEdit_3")
-        self.horizontalLayout_4.addWidget(self.lineEdit_3)
+        self.txtAge.setFont(font)
+        self.txtAge.setObjectName("txtAge")
+        self.horizontalLayout_4.addWidget(self.txtAge)
         self.gridLayout_6.addLayout(self.horizontalLayout_4, 4, 0, 1, 1)
         self.horizontalLayout_5 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_5.setObjectName("horizontalLayout_5")
@@ -217,22 +217,24 @@ class DiagnosisWindow(object):
         self.label_7.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_7.setObjectName("label_7")
         self.horizontalLayout_5.addWidget(self.label_7)
-        self.lineEdit_4 = QtWidgets.QLineEdit(self.frame_5)
+        self.txtImage = QtWidgets.QLineEdit(self.frame_5)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.lineEdit_4.sizePolicy().hasHeightForWidth())
-        self.lineEdit_4.setSizePolicy(sizePolicy)
-        self.lineEdit_4.setMaximumSize(QtCore.QSize(140, 16777215))
+        sizePolicy.setHeightForWidth(self.txtImage.sizePolicy().hasHeightForWidth())
+        self.txtImage.setSizePolicy(sizePolicy)
+        self.txtImage.setMaximumSize(QtCore.QSize(140, 16777215))
         font = QtGui.QFont()
         font.setFamily("Times New Roman")
         font.setPointSize(10)
-        self.lineEdit_4.setFont(font)
-        self.lineEdit_4.setObjectName("lineEdit_4")
-        self.horizontalLayout_5.addWidget(self.lineEdit_4)
-        self.toolButton = QtWidgets.QToolButton(self.frame_5)
-        self.toolButton.setObjectName("toolButton")
-        self.horizontalLayout_5.addWidget(self.toolButton)
+        self.txtImage.setFont(font)
+        self.txtImage.setObjectName("txtImage")
+        self.horizontalLayout_5.addWidget(self.txtImage)
+        self.btnInputImg = QtWidgets.QPushButton(self.frame_5)
+        self.btnInputImg.setObjectName("btnInputImg")
+        self.horizontalLayout_5.addWidget(self.btnInputImg)
+        # btn action
+        self.btnInputImg.clicked.connect(self.btnInputImg_clicked)
         self.gridLayout_6.addLayout(self.horizontalLayout_5, 5, 0, 1, 1)
         self.horizontalLayout = QtWidgets.QHBoxLayout()
         self.horizontalLayout.setObjectName("horizontalLayout")
@@ -247,16 +249,18 @@ class DiagnosisWindow(object):
         self.label_4.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_4.setObjectName("label_4")
         self.horizontalLayout.addWidget(self.label_4)
-        self.lineEdit = QtWidgets.QLineEdit(self.frame_5)
-        self.lineEdit.setMaximumSize(QtCore.QSize(150, 16777215))
+        self.txtPatId = QtWidgets.QLineEdit(self.frame_5)
+        self.txtPatId.setMaximumSize(QtCore.QSize(150, 16777215))
         font = QtGui.QFont()
         font.setFamily("Times New Roman")
         font.setPointSize(10)
-        self.lineEdit.setFont(font)
-        self.lineEdit.setObjectName("lineEdit")
-        self.horizontalLayout.addWidget(self.lineEdit)
+        self.txtPatId.setFont(font)
+        self.txtPatId.setObjectName("txtPatId")
+        self.horizontalLayout.addWidget(self.txtPatId)
         self.gridLayout_6.addLayout(self.horizontalLayout, 1, 0, 1, 1)
         self.btnSubmit = QtWidgets.QPushButton(self.frame_5)
+        # btn action
+        self.btnSubmit.clicked.connect(self.btnSubmit_clicked)
         self.btnSubmit.setMaximumSize(QtCore.QSize(100, 30))
         font = QtGui.QFont()
         font.setFamily("Times New Roman")
@@ -293,10 +297,10 @@ class DiagnosisWindow(object):
         self.label_9.setFont(font)
         self.label_9.setObjectName("label_9")
         self.horizontalLayout_7.addWidget(self.label_9)
-        self.lineEdit_5 = QtWidgets.QLineEdit(self.frame_6)
-        self.lineEdit_5.setMaximumSize(QtCore.QSize(30, 16777215))
-        self.lineEdit_5.setObjectName("lineEdit_5")
-        self.horizontalLayout_7.addWidget(self.lineEdit_5)
+        self.txtGrade = QtWidgets.QLineEdit(self.frame_6)
+        self.txtGrade.setMaximumSize(QtCore.QSize(30, 16777215))
+        self.txtGrade.setObjectName("txtGrade")
+        self.horizontalLayout_7.addWidget(self.txtGrade)
         self.gridLayout_7.addLayout(self.horizontalLayout_7, 2, 0, 1, 1)
         self.horizontalLayout_6 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_6.setObjectName("horizontalLayout_6")
@@ -309,10 +313,10 @@ class DiagnosisWindow(object):
         self.label_10.setFont(font)
         self.label_10.setObjectName("label_10")
         self.horizontalLayout_6.addWidget(self.label_10)
-        self.lineEdit_7 = QtWidgets.QLineEdit(self.frame_6)
-        self.lineEdit_7.setMaximumSize(QtCore.QSize(50, 16777215))
-        self.lineEdit_7.setObjectName("lineEdit_7")
-        self.horizontalLayout_6.addWidget(self.lineEdit_7)
+        self.txtDr = QtWidgets.QLineEdit(self.frame_6)
+        self.txtDr.setMaximumSize(QtCore.QSize(50, 16777215))
+        self.txtDr.setObjectName("txtDr")
+        self.horizontalLayout_6.addWidget(self.txtDr)
         self.gridLayout_7.addLayout(self.horizontalLayout_6, 1, 0, 1, 1)
         self.horizontalLayout_8 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_8.setObjectName("horizontalLayout_8")
@@ -325,10 +329,10 @@ class DiagnosisWindow(object):
         self.label_11.setFont(font)
         self.label_11.setObjectName("label_11")
         self.horizontalLayout_8.addWidget(self.label_11)
-        self.lineEdit_6 = QtWidgets.QLineEdit(self.frame_6)
-        self.lineEdit_6.setMaximumSize(QtCore.QSize(100, 16777215))
-        self.lineEdit_6.setObjectName("lineEdit_6")
-        self.horizontalLayout_8.addWidget(self.lineEdit_6)
+        self.txtSeverity = QtWidgets.QLineEdit(self.frame_6)
+        self.txtSeverity.setMaximumSize(QtCore.QSize(100, 16777215))
+        self.txtSeverity.setObjectName("txtSeverity")
+        self.horizontalLayout_8.addWidget(self.txtSeverity)
         self.gridLayout_7.addLayout(self.horizontalLayout_8, 3, 0, 1, 1)
         self.label_15 = QtWidgets.QLabel(self.frame_6)
         self.label_15.setObjectName("label_15")
@@ -374,7 +378,7 @@ class DiagnosisWindow(object):
         self.comboBox.setItemText(2, _translate("Form", "Others"))
         self.label_6.setText(_translate("Form", "Age"))
         self.label_7.setText(_translate("Form", "Retinal Fundus Image"))
-        self.toolButton.setText(_translate("Form", "..."))
+        self.btnInputImg.setText(_translate("Form", "Browse"))
         self.label_4.setText(_translate("Form", "Patient ID"))
         self.btnSubmit.setText(_translate("Form", "Submit"))
         self.label_13.setText(_translate("Form", "Blood Vessels"))
@@ -401,6 +405,38 @@ class DiagnosisWindow(object):
 
     def btnExit_clicked(self):
         QtCore.QCoreApplication.instance().quit()
+
+    def btnInputImg_clicked(self):
+        # open file browser to input retinal image file for diagnosis
+        options = QtWidgets.QFileDialog.Options()
+        options |= QtWidgets.QFileDialog.DontUseNativeDialog
+        fileName, _ = QtWidgets.QFileDialog.getOpenFileName(
+            None,
+            "Select Image",
+            "",
+            "All Files (*);; jpeg Files (*.jpg);; png Files (*.png)",
+            options=options)
+        if fileName:
+            self.txtImage.setText(fileName)
+            # self.refreshAll()
+
+
+    def btnSubmit_clicked(self):
+        self.pid = self.txtPatId.text()
+        self.name = self.txtName.text()
+        self.gender = self.comboBox.currentText()
+        self.age = self.txtAge.text()
+        self.filePath = self.txtImage.text()
+        # print("Patient ID: ", self.pid)
+        # print("Name: ", self.name)
+        # print("Gender: ", self.gender)
+        # print("Age: ", self.age)
+        # print(self.filePath)
+
+        # adding data entered to a dataframe and converting the dataframe into a csv file
+        df = pd.DataFrame({'Patient_ID': [self.pid], 'Name': [self.name], 'Gender': [self.gender], 'Age': [self.age], 'filepath': [self.filePath]})
+        print(df.head())
+        df.to_csv('records.csv')
 
 if __name__ == "__main__":
     import sys

@@ -7,6 +7,7 @@ from csv import writer
 from csv import reader
 
 
+
 def extract_bv(image):
     b, green_fundus, r = cv2.split(image)
     # cv2.imshow('gr', green_fundus)
@@ -33,7 +34,7 @@ def extract_bv(image):
     contours, hierarchy = cv2.findContours(f6.copy(), cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)  # change removed im2
     for cnt in contours:
         if cv2.contourArea(cnt) <= 200:
-            cv2.drawContours(mask, [cnt], -1, 0, -1)
+                cv2.drawContours(mask, [cnt], -1, 0, -1)
     im = cv2.bitwise_and(f5, f5, mask=mask)
     ret, fin = cv2.threshold(im, 15, 255, cv2.THRESH_BINARY_INV)
     newfin = cv2.erode(fin, cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (3, 3)), iterations=1)
@@ -110,8 +111,13 @@ if __name__ == "__main__":
         # list of tuples of required data
         lst.append((density_white_pix))
 
-        df2 = pd.DataFrame({'image_name': [file_name_no_extension], 'density_of_blood_vessels': [density_white_pix]})
-        df2.to_csv('records.csv')
+        # adding records into dataframe and storing in csv file
+        df2 = pd.read_csv(current_directory + '/records.csv')
+        df2["density_of_blood_vessels"] = density_white_pix
+        df2.to_csv("records.csv", index=False)
+
+        # df2 = pd.DataFrame({'image_name': [file_name_no_extension], 'density_of_blood_vessels': [density_white_pix]})
+        # df2.to_csv('records.csv')
 
         # Create a DataFrame object for density of blood vessels
         df1 = pd.DataFrame(lst, columns=['density_of_blood_vessels'])
