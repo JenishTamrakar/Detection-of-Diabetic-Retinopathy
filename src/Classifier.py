@@ -9,8 +9,9 @@ from sklearn.metrics import precision_score
 from sklearn.metrics import recall_score
 from sklearn.metrics import classification_report
 
+class Classifier:
 
-def training():
+    def training(self):
         df = pd.read_csv('C:/Users/Jenish Tamrakar/Desktop/DR/training_sample1.csv')
         # print(df.tail())
         # print(df.shape)
@@ -19,7 +20,7 @@ def training():
         # print(df['Retinopathy grade'].value_counts())
 
 
-        # plot
+        # for plot
         nodr_df = df[df['Retinopathy grade'] == 0]
         mild_df = df[df['Retinopathy grade'] == 1]
         moderate_df = df[df['Retinopathy grade'] == 2]
@@ -32,14 +33,17 @@ def training():
         severe_df.plot(kind='scatter', x='no_of_haemorrhages', y='no_of_microaneurysms', color='blue', label='Severe Diabetic Retinopathy', ax=axes)
         vsevere_df.plot(kind='scatter', x='no_of_haemorrhages', y='no_of_microaneurysms', color='red', label='Very Severe Diabetic Retinopathy', ax=axes)
 
+        # displaying plot
         # plt.scatter(axes)
         # plt.show()
         # print(df.dtypes)
 
         # print(df.columns)
+        # selecting the relavant columns of the dataframe for classification
         relevant_df = df[['density_of_blood_vessels', 'no_of_haemorrhages', 'no_of_microaneurysms']]
         # print(relevant_df.columns)
 
+        # converting the dataframe into numpy array for classification
         X = np.asarray(relevant_df)                # multidimensional data
         y = np.asarray(df['Retinopathy grade'])    # 1D data
 
@@ -48,6 +52,7 @@ def training():
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state=4)
         # train, test = train_test_split(df, test_size=0.2)
 
+        # the contents in the training set and testing set
         # X_train (329 x 3)
         # y_train (329 x 1)
         # X_test (83 x 3)
@@ -62,6 +67,7 @@ def training():
         classifier.fit(X_train, y_train)
         # print(classifier.fit(X_train, y_train))
 
+        # getting data stored in csv for detection and prediction of DR from the image input from the user
         df1 = pd.read_csv('records.csv')
         relevant_df1 = df1[['density_of_blood_vessels', 'no_of_haemorrhages', 'no_of_microaneurysms']]
         X_predict = np.asarray(relevant_df1)
@@ -100,8 +106,9 @@ def training():
         df3.to_csv("records.csv", index=False)
         # testing
         # y_predicted = classifier.predict(X_test)
-        df = pd.read_csv('records.csv')
 
+        # appending results to the csv file
+        df = pd.read_csv('records.csv')
         with open('data.csv', 'a') as f:
             df.to_csv(f, header=False)
 
@@ -113,7 +120,8 @@ def training():
         # print(classification_report(y_test, y_predicted))
 
 if __name__ == "__main__":
-        training()
+    cl = Classifier()
+    cl.training()
     # df = pd.read_csv('records.csv')
     # relevant_df = df[['density_of_blood_vessels', 'no_of_haemorrhages', 'no_of_microaneurysms']]
     # X = np.asarray(relevant_df)
