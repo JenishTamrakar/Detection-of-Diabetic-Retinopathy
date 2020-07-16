@@ -112,21 +112,24 @@ class Classifier:
         with open('data.csv', 'a') as f:
             df.to_csv(f, header=False)
 
-        os.remove("records.csv")
         # get accuracy of testing
         # print("Accuracy:", accuracy_score(y_test, y_predicted))
         # print("Precision:", precision_score(y_test, y_predicted))
         # print("Recall:", recall_score(y_test, y_predicted))
         # print(classification_report(y_test, y_predicted))
 
+
+    def main(self):
+        cl.training()
+        # df = pd.read_csv('records.csv')
+        # relevant_df = df[['density_of_blood_vessels', 'no_of_haemorrhages', 'no_of_microaneurysms']]
+        # X = np.asarray(relevant_df)
+
+        # testing
+        # y_predicted = classifier.predict(X)
+
+        # print(y_predicted)
+
 if __name__ == "__main__":
     cl = Classifier()
-    cl.training()
-    # df = pd.read_csv('records.csv')
-    # relevant_df = df[['density_of_blood_vessels', 'no_of_haemorrhages', 'no_of_microaneurysms']]
-    # X = np.asarray(relevant_df)
-
-    # testing
-    # y_predicted = classifier.predict(X)
-
-    # print(y_predicted)
+    cl.main()

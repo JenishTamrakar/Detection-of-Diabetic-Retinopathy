@@ -34,41 +34,44 @@ class MaExtract:
         return opening
 
 
+    def main(self):
+        # detect the current working directory and print it
+        current_directory = os.getcwd()
+        pathFolder = current_directory + "\images/"
+        filesArray = [x for x in os.listdir(pathFolder) if os.path.isfile(os.path.join(pathFolder, x))]
+        # print(filesArray)
+        for file_name in filesArray:
+            file_name_no_extension = os.path.splitext(file_name)[0]
+            fundus = cv2.imread(pathFolder + '/' + file_name)
+        # fundus = cv2.imread("D:/DR_Datasets/CLAHE_images/IDRiD_210_clahe.png")
+        mex = MaExtract()
+        ma = mex.extract_ma(fundus)
+
+        # threshold
+        th, thresh3 = cv2.threshold(ma, 100, 255, cv2.THRESH_BINARY_INV | cv2.THRESH_OTSU)
+        # findcontours
+        cnts = cv2.findContours(thresh3, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)[-2]
+
+        # filter by area
+        s1 = 2
+        s2 = 500
+        xcnts = []
+        for cnt in cnts:
+            if s1 < cv2.contourArea(cnt) < s2:
+                xcnts.append(cnt)
+        # printing number of MAs
+        no_of_mas = len(xcnts)
+        # print(no_of_mas)
+        print("Number of MAs: {}".format(len(xcnts)))
+
+        df = pd.read_csv(current_directory +'/records.csv')
+        df["no_of_microaneurysms"] = no_of_mas
+        df.to_csv("records.csv", index=False)
+        img = cv2.resize(ma, (360, 360))
+        cv2.imshow('MA', img)
+        cv2.waitKey(0)
+        # cv2.destroyAllWindows()
+
 if __name__ == "__main__":
-    # detect the current working directory and print it
-    current_directory = os.getcwd()
-    pathFolder = current_directory + "\images/"
-    filesArray = [x for x in os.listdir(pathFolder) if os.path.isfile(os.path.join(pathFolder, x))]
-    # print(filesArray)
-    for file_name in filesArray:
-        file_name_no_extension = os.path.splitext(file_name)[0]
-        fundus = cv2.imread(pathFolder + '/' + file_name)
-    # fundus = cv2.imread("D:/DR_Datasets/CLAHE_images/IDRiD_210_clahe.png")
     mex = MaExtract()
-    ma = mex.extract_ma(fundus)
-
-    # threshold
-    th, thresh3 = cv2.threshold(ma, 100, 255, cv2.THRESH_BINARY_INV | cv2.THRESH_OTSU)
-    # findcontours
-    cnts = cv2.findContours(thresh3, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)[-2]
-
-    # filter by area
-    s1 = 2
-    s2 = 500
-    xcnts = []
-    for cnt in cnts:
-        if s1 < cv2.contourArea(cnt) < s2:
-            xcnts.append(cnt)
-    # printing number of MAs
-    no_of_mas = len(xcnts)
-    # print(no_of_mas)
-    print("Number of MAs: {}".format(len(xcnts)))
-
-    df = pd.read_csv(current_directory +'/records.csv')
-    df["no_of_microaneurysms"] = no_of_mas
-    df.to_csv("records.csv", index=False)
-    img = cv2.resize(ma, (600, 600))
-    cv2.imshow('MA', img)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
-
+    mex.main()

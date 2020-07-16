@@ -11,6 +11,11 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 
 # from src.Ui_MainWindow import Ui_MainWindow
 # from src.ViewRecordsWindow import ViewRecordsWindow
+from src.BloodVesselsExtract import BloodVesselsExtract
+from src.Classifier import Classifier
+from src.HemorrhageDetection import HemorrhageDetection
+from src.ImageProcessing import ImageProcessing
+from src.MaExtract import MaExtract
 from src.ViewRecordsWindow import ViewRecordsWindow
 
 
@@ -75,16 +80,16 @@ class DiagnosisWindow(object):
         self.btnExit.setFont(font)
         self.btnExit.setObjectName("btnExit")
         self.gridLayout_2.addWidget(self.btnExit, 3, 0, 1, 1)
-        self.btnDiagnose = QtWidgets.QPushButton(self.frame_2)
-        self.btnDiagnose.setMaximumSize(QtCore.QSize(16777215, 50))
+        self.btnDiagnosis = QtWidgets.QPushButton(self.frame_2)
+        self.btnDiagnosis.setMaximumSize(QtCore.QSize(16777215, 50))
         font = QtGui.QFont()
         font.setFamily("Times New Roman")
         font.setPointSize(13)
         font.setBold(True)
         font.setWeight(75)
-        self.btnDiagnose.setFont(font)
-        self.btnDiagnose.setObjectName("btnDiagnose")
-        self.gridLayout_2.addWidget(self.btnDiagnose, 1, 0, 1, 1)
+        self.btnDiagnosis.setFont(font)
+        self.btnDiagnosis.setObjectName("btnDiagnosis")
+        self.gridLayout_2.addWidget(self.btnDiagnosis, 1, 0, 1, 1)
         self.btnDashboard = QtWidgets.QPushButton(self.frame_2)
         # btn action
         self.btnDashboard.clicked.connect(self.openDashboard)
@@ -230,6 +235,7 @@ class DiagnosisWindow(object):
         self.txtImage.setFont(font)
         self.txtImage.setObjectName("txtImage")
         self.horizontalLayout_5.addWidget(self.txtImage)
+        self.txtImage.setReadOnly(True)
         self.btnInputImg = QtWidgets.QPushButton(self.frame_5)
         self.btnInputImg.setObjectName("btnInputImg")
         self.horizontalLayout_5.addWidget(self.btnInputImg)
@@ -262,6 +268,10 @@ class DiagnosisWindow(object):
         # btn action
         self.btnSubmit.clicked.connect(self.btnSubmit_clicked)
         self.btnSubmit.setMaximumSize(QtCore.QSize(100, 30))
+        self.btnDiagnose = QtWidgets.QPushButton(self.frame_5)
+        # btn action
+        self.btnDiagnose.clicked.connect(self.btnDiagnose_clicked)
+        self.btnDiagnose.setMaximumSize(QtCore.QSize(100, 30))
         font = QtGui.QFont()
         font.setFamily("Times New Roman")
         font.setPointSize(10)
@@ -270,6 +280,10 @@ class DiagnosisWindow(object):
         self.btnSubmit.setFont(font)
         self.btnSubmit.setObjectName("btnSubmit")
         self.gridLayout_6.addWidget(self.btnSubmit, 6, 0, 1, 1)
+        self.btnDiagnose.setFont(font)
+        self.btnDiagnose.setObjectName("btnDiagnose")
+        self.gridLayout_6.addWidget(self.btnDiagnose, 6, 2, 1, 1)
+        self.btnDiagnose.setEnabled(False)
         self.gridLayout_3.addWidget(self.frame_5, 1, 0, 1, 1)
         self.frame_6 = QtWidgets.QFrame(self.frame_3)
         self.frame_6.setFrameShape(QtWidgets.QFrame.StyledPanel)
@@ -277,15 +291,15 @@ class DiagnosisWindow(object):
         self.frame_6.setObjectName("frame_6")
         self.gridLayout_7 = QtWidgets.QGridLayout(self.frame_6)
         self.gridLayout_7.setObjectName("gridLayout_7")
-        self.label_13 = QtWidgets.QLabel(self.frame_6)
-        self.label_13.setObjectName("label_13")
-        self.gridLayout_7.addWidget(self.label_13, 5, 0, 1, 1)
-        self.label_14 = QtWidgets.QLabel(self.frame_6)
-        self.label_14.setObjectName("label_14")
-        self.gridLayout_7.addWidget(self.label_14, 6, 0, 1, 1)
-        self.label_12 = QtWidgets.QLabel(self.frame_6)
-        self.label_12.setObjectName("label_12")
-        self.gridLayout_7.addWidget(self.label_12, 4, 0, 1, 1)
+        # self.label_13 = QtWidgets.QLabel(self.frame_6)
+        # self.label_13.setObjectName("label_13")
+        # self.gridLayout_7.addWidget(self.label_13, 5, 0, 1, 1)
+        # self.label_14 = QtWidgets.QLabel(self.frame_6)
+        # self.label_14.setObjectName("label_14")
+        # self.gridLayout_7.addWidget(self.label_14, 6, 0, 1, 1)
+        # self.label_12 = QtWidgets.QLabel(self.frame_6)
+        # self.label_12.setObjectName("label_12")
+        # self.gridLayout_7.addWidget(self.label_12, 4, 0, 1, 1)
         self.horizontalLayout_7 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_7.setObjectName("horizontalLayout_7")
         self.label_9 = QtWidgets.QLabel(self.frame_6)
@@ -298,7 +312,8 @@ class DiagnosisWindow(object):
         self.label_9.setObjectName("label_9")
         self.horizontalLayout_7.addWidget(self.label_9)
         self.txtGrade = QtWidgets.QLineEdit(self.frame_6)
-        self.txtGrade.setMaximumSize(QtCore.QSize(30, 16777215))
+        self.txtGrade.setMaximumSize(QtCore.QSize(100, 16777215))
+        self.txtGrade.setReadOnly(True)
         self.txtGrade.setObjectName("txtGrade")
         self.horizontalLayout_7.addWidget(self.txtGrade)
         self.gridLayout_7.addLayout(self.horizontalLayout_7, 2, 0, 1, 1)
@@ -314,7 +329,8 @@ class DiagnosisWindow(object):
         self.label_10.setObjectName("label_10")
         self.horizontalLayout_6.addWidget(self.label_10)
         self.txtDr = QtWidgets.QLineEdit(self.frame_6)
-        self.txtDr.setMaximumSize(QtCore.QSize(50, 16777215))
+        self.txtDr.setReadOnly(True)
+        self.txtDr.setMaximumSize(QtCore.QSize(100, 16777215))
         self.txtDr.setObjectName("txtDr")
         self.horizontalLayout_6.addWidget(self.txtDr)
         self.gridLayout_7.addLayout(self.horizontalLayout_6, 1, 0, 1, 1)
@@ -331,12 +347,13 @@ class DiagnosisWindow(object):
         self.horizontalLayout_8.addWidget(self.label_11)
         self.txtSeverity = QtWidgets.QLineEdit(self.frame_6)
         self.txtSeverity.setMaximumSize(QtCore.QSize(100, 16777215))
+        self.txtSeverity.setReadOnly(True)
         self.txtSeverity.setObjectName("txtSeverity")
         self.horizontalLayout_8.addWidget(self.txtSeverity)
         self.gridLayout_7.addLayout(self.horizontalLayout_8, 3, 0, 1, 1)
-        self.label_15 = QtWidgets.QLabel(self.frame_6)
-        self.label_15.setObjectName("label_15")
-        self.gridLayout_7.addWidget(self.label_15, 7, 0, 1, 1)
+        # self.label_15 = QtWidgets.QLabel(self.frame_6)
+        # self.label_15.setObjectName("label_15")
+        # self.gridLayout_7.addWidget(self.label_15, 7, 0, 1, 1)
         self.gridLayout_3.addWidget(self.frame_6, 1, 2, 1, 1)
         self.line_3 = QtWidgets.QFrame(self.frame_3)
         self.line_3.setFrameShape(QtWidgets.QFrame.VLine)
@@ -367,7 +384,8 @@ class DiagnosisWindow(object):
         Form.setWindowTitle(_translate("Form", "Detection of Diabetic Retinopathy and Classification of its Severity"))
         self.label.setText(_translate("Form", "Detection of Diabetic Retinopathy and Classification of its Severity"))
         self.btnExit.setText(_translate("Form", "Exit"))
-        self.btnDiagnose.setText(_translate("Form", "Diagnosis"))
+        self.btnDiagnosis.setText(_translate("Form", "Diagnosis"))
+        self.btnDiagnose.setText(_translate("Form", "Diagnose"))
         self.btnDashboard.setText(_translate("Form", "Dashboard"))
         self.btnViewRecs.setText(_translate("Form", "View Previous Records"))
         self.label_3.setText(_translate("Form", "Diagnosis"))
@@ -381,14 +399,14 @@ class DiagnosisWindow(object):
         self.btnInputImg.setText(_translate("Form", "Browse"))
         self.label_4.setText(_translate("Form", "Patient ID"))
         self.btnSubmit.setText(_translate("Form", "Submit"))
-        self.label_13.setText(_translate("Form", "Blood Vessels"))
-        self.label_14.setText(_translate("Form", "Microaneurysms"))
-        self.label_12.setText(_translate("Form", "Preprocessed Image"))
+        # self.label_13.setText(_translate("Form", "Blood Vessels"))
+        # self.label_14.setText(_translate("Form", "Microaneurysms"))
+        # self.label_12.setText(_translate("Form", "Preprocessed Image"))
         self.label_9.setText(_translate("Form", "DR Grade"))
         self.label_10.setText(_translate("Form", "Presence of Diabetic Retinopathy"))
         self.label_11.setText(_translate("Form", "Severity"))
-        self.label_15.setText(_translate("Form", "Hemorrhages"))
-        self.label_8.setText(_translate("Form", "Results"))
+        # self.label_15.setText(_translate("Form", "Hemorrhages"))
+        self.label_8.setText(_translate("Form", "Results of the Diagnosis"))
 
     def openDashboard(self):
         self.window = QtWidgets.QMainWindow()
@@ -432,11 +450,50 @@ class DiagnosisWindow(object):
         # print("Gender: ", self.gender)
         # print("Age: ", self.age)
         # print(self.filePath)
+        if(self.pid != '' and  self.name != '' and self.age != '' and self.filePath != ''):
+            # adding data entered to a dataframe and converting the dataframe into a csv file
+            df = pd.DataFrame({'Patient_ID': [self.pid], 'Name': [self.name], 'Gender': [self.gender], 'Age': [self.age], 'filepath': [self.filePath]})
+            # print(df.head())
+            df.to_csv('records.csv')
+            self.txtPatId.clear()
+            self.txtName.clear()
+            self.txtAge.clear()
+            self.txtImage.clear()
+            self.btnDiagnose.setEnabled(True)
+        else:
+            msg = QtWidgets.QMessageBox()
+            msg.setIcon(QtWidgets.QMessageBox.Information)
+            msg.setText("Warning")
+            msg.setInformativeText("Please fill in all the information.")
+            msg.setWindowTitle("Information Required")
+            msg.setStandardButtons(QtWidgets.QMessageBox.Ok | QtWidgets.QMessageBox.Cancel)
+            # msg.buttonClicked.connect(msgbtn)
+            returnValue = msg.exec()
+            if returnValue == QtWidgets.QMessageBox.Ok:
+                print('OK clicked')
+            # print("Please fill in all the information.")
 
-        # adding data entered to a dataframe and converting the dataframe into a csv file
-        df = pd.DataFrame({'Patient_ID': [self.pid], 'Name': [self.name], 'Gender': [self.gender], 'Age': [self.age], 'filepath': [self.filePath]})
-        print(df.head())
-        df.to_csv('records.csv')
+    def btnDiagnose_clicked(self):
+        ip = ImageProcessing()
+        ip.main()
+        bve = BloodVesselsExtract()
+        bve.main()
+        mex = MaExtract()
+        mex.main()
+        hd = HemorrhageDetection()
+        hd.main()
+        cl = Classifier()
+        cl.training()
+
+        df = pd.read_csv('records.csv')
+        status = df["Diabetic_retinopathy_status"].values[0]
+        grade = df["Diabetic_retinopathy_grade"].values[0]
+        severity = df["Severity"].values[0]
+        # print(status)
+        self.txtDr.setText(df["Diabetic_retinopathy_status"].values[0])
+        self.txtGrade.setText(df["Diabetic_retinopathy_grade"].values[0])
+        self.txtSeverity.setText(df["Severity"].values[0])
+        os.remove("records.csv")
 
 if __name__ == "__main__":
     import sys

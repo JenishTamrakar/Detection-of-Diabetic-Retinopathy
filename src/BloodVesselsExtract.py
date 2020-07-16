@@ -42,7 +42,7 @@ class BloodVesselsExtract:
 
         # removal of blobs of unwanted bigger chunks taking in consideration they are not straight lines
         fundus_eroded = cv2.bitwise_not(newfin)
-        xmask = np.ones(fundus.shape[:2], dtype="uint8") * 255
+        xmask = np.ones(image.shape[:2], dtype="uint8") * 255
         xcontours, xhierarchy = cv2.findContours(fundus_eroded.copy(), cv2.RETR_LIST,
                                              cv2.CHAIN_APPROX_SIMPLE)  # changed removed x1
         for cnt in xcontours:
@@ -82,51 +82,57 @@ class BloodVesselsExtract:
                 csv_writer.writerow(row)
 
 
-if __name__ == "__main__":
-    # pathFolder = "D:/DR_Datasets/CLAHE_images/"
-    current_directory = os.getcwd()
-    pathFolder = current_directory + "\images/"
-    filesArray = [x for x in os.listdir(pathFolder) if os.path.isfile(os.path.join(pathFolder, x))]
+    def main(self):
+        # pathFolder = "D:/DR_Datasets/CLAHE_images/"
+        current_directory = os.getcwd()
+        pathFolder = current_directory + "\images/"
+        filesArray = [x for x in os.listdir(pathFolder) if os.path.isfile(os.path.join(pathFolder, x))]
 
-    # destinationFolder = "D:/DR_Datasets/Blood_vessels/"
-    # if not os.path.exists(destinationFolder):
-    #     os.mkdir(destinationFolder)
-    lst = []
-    for file_name in filesArray:
-        file_name_no_extension = os.path.splitext(file_name)[0]
-        fundus = cv2.imread(pathFolder + '/' + file_name)
-        bve = BloodVesselsExtract()
-        bloodvessel = bve.extract_bv(fundus)
-        # cv2.imwrite(destinationFolder + file_name_no_extension + "_bloodvessel.png", bloodvessel)
+        # destinationFolder = "D:/DR_Datasets/Blood_vessels/"
+        # if not os.path.exists(destinationFolder):
+        #     os.mkdir(destinationFolder)
+        lst = []
+        for file_name in filesArray:
+            file_name_no_extension = os.path.splitext(file_name)[0]
+            fundus = cv2.imread(pathFolder + '/' + file_name)
+            bve = BloodVesselsExtract()
+            bloodvessel = bve.extract_bv(fundus)
+            # cv2.imwrite(destinationFolder + file_name_no_extension + "_bloodvessel.png", bloodvessel)
+            resized_bvimg = cv2.resize(bloodvessel, (360,360))
+            cv2.imshow("Blood Vessels", resized_bvimg)
+            cv2.waitKey(0)
+            # calculation of density of white pixels representing blood vessels
+            n_white_pix = np.sum(bloodvessel == 255)
+            height = bloodvessel.shape[0]
+            width = bloodvessel.shape[1]
+            total_pix = height * width
+            density_white_pix = n_white_pix / total_pix
+            print("No. of white pixels = ", n_white_pix)
+            print("Density of white pixels = ", density_white_pix)
 
-        # calculation of density of white pixels representing blood vessels
-        n_white_pix = np.sum(bloodvessel == 255)
-        height = bloodvessel.shape[0]
-        width = bloodvessel.shape[1]
-        total_pix = height * width
-        density_white_pix = n_white_pix / total_pix
-        print("No. of white pixels = ", n_white_pix)
-        print("Density of white pixels = ", density_white_pix)
+            # for preparation of training data
+            # list of tuples of required data
+            lst.append((density_white_pix))
+
+            # adding records into dataframe and storing in csv file
+            df2 = pd.read_csv(current_directory + '/records.csv')
+            df2["density_of_blood_vessels"] = density_white_pix
+            df2.to_csv("records.csv", index=False)
+
+            # df2 = pd.DataFrame({'image_name': [file_name_no_extension], 'density_of_blood_vessels': [density_white_pix]})
+            # df2.to_csv('records.csv')
+
+            # Create a DataFrame object for density of blood vessels
+            df1 = pd.DataFrame(lst, columns=['density_of_blood_vessels'])
+            # print(df1)
 
         # for preparation of training data
-        # list of tuples of required data
-        lst.append((density_white_pix))
+        # header_of_new_col = 'density_of_blood_vessels'
+        # Add a list as column
+        # add_column_in_csv('C:/Users/Jenish Tamrakar/Desktop/DR/training_sample.csv',
+        #                   'C:/Users/Jenish Tamrakar/Desktop/DR/training_sample1.csv',
+        #                   lambda row, line_num: row.append(lst[line_num - 1]))
 
-        # adding records into dataframe and storing in csv file
-        df2 = pd.read_csv(current_directory + '/records.csv')
-        df2["density_of_blood_vessels"] = density_white_pix
-        df2.to_csv("records.csv", index=False)
-
-        # df2 = pd.DataFrame({'image_name': [file_name_no_extension], 'density_of_blood_vessels': [density_white_pix]})
-        # df2.to_csv('records.csv')
-
-        # Create a DataFrame object for density of blood vessels
-        df1 = pd.DataFrame(lst, columns=['density_of_blood_vessels'])
-        # print(df1)
-
-    # for preparation of training data
-    # header_of_new_col = 'density_of_blood_vessels'
-    # Add a list as column
-    # add_column_in_csv('C:/Users/Jenish Tamrakar/Desktop/DR/training_sample.csv',
-    #                   'C:/Users/Jenish Tamrakar/Desktop/DR/training_sample1.csv',
-    #                   lambda row, line_num: row.append(lst[line_num - 1]))
+if __name__ == "__main__":
+    bve = BloodVesselsExtract()
+    bve.main()
