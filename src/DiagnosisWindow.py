@@ -429,6 +429,7 @@ class DiagnosisWindow(object):
         self.ui = ViewRecordsWindow()
         self.ui.setupUi(self.window)
         self.window.show()
+        self.ui.loadData()
 
     def btnExit_clicked(self):
         QtCore.QCoreApplication.instance().quit()
