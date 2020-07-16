@@ -8,7 +8,7 @@
 import csv
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-
+import pandas as pd
 # from src.DiagnosisWindow import DiagnosisWindow
 
 
@@ -165,6 +165,7 @@ class ViewRecordsWindow(object):
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
 
+
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Detection of Diabetic Retinopathy and Classification of its Severity"))
@@ -208,13 +209,50 @@ class ViewRecordsWindow(object):
     def btnExit_clicked(self):
         QtCore.QCoreApplication.instance().quit()
 
+    def loadData(self):
+        df = pd.read_csv('data.csv')
+        # removing unwanted columns
+        df = df.drop("Unnamed: 0", axis=1)
+        df = df.drop("density_of_blood_vessels", axis=1)
+        df = df.drop("no_of_microaneurysms", axis=1)
+        df = df.drop("no_of_haemorrhages", axis=1)
+        # print(df.shape[0])
+        # print(df.iloc[0])
+        # headers = list(df)
+        self.tableWidget.setRowCount(df.shape[0])
+        self.tableWidget.setColumnCount(df.shape[1])
+        # self.tableWidget.setHorizontalHeaderLabels(headers)
+
+        # populate data from csv file to table widget
+        # getting data from df is computationally costly so convert it to array first
+        df_array = df.values
+        for row in range(df.shape[0]):
+            for col in range(df.shape[1]):
+                self.tableWidget.setItem(row, col, QtWidgets.QTableWidgetItem(str(df_array[row, col])))
+
+    def main(self):
+        import sys
+
+        app = QtWidgets.QApplication(sys.argv)
+        Form = QtWidgets.QWidget()
+        ui = ViewRecordsWindow()
+        ui.setupUi(Form)
+        ui.loadData()
+        Form.show()
+
+        sys.exit(app.exec_())
 
 if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    Form = QtWidgets.QWidget()
     ui = ViewRecordsWindow()
-    ui.setupUi(Form)
-    Form.show()
-    sys.exit(app.exec_())
+    ui.main()
+    # import sys
+    #
+    # app = QtWidgets.QApplication(sys.argv)
+    # Form = QtWidgets.QWidget()
+    # ui = ViewRecordsWindow()
+    # ui.setupUi(Form)
+    # ui.loadData()
+    # Form.show()
+
+    # sys.exit(app.exec_())
 
