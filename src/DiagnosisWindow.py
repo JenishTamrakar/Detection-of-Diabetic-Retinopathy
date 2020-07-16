@@ -320,6 +320,14 @@ class DiagnosisWindow(object):
         self.horizontalLayout_6 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_6.setObjectName("horizontalLayout_6")
         self.label_10 = QtWidgets.QLabel(self.frame_6)
+
+        self.btnReset = QtWidgets.QPushButton(self.frame_6)
+        # btn action
+        self.btnReset.clicked.connect(self.btnReset_clicked)
+        self.btnReset.setMaximumSize(QtCore.QSize(100, 30))
+        self.btnReset.setFont(font)
+        self.btnReset.setObjectName("btnReset")
+        self.gridLayout_7.addWidget(self.btnReset, 6, 0, 1, 1)
         font = QtGui.QFont()
         font.setFamily("Times New Roman")
         font.setPointSize(10)
@@ -388,6 +396,7 @@ class DiagnosisWindow(object):
         self.btnDiagnose.setText(_translate("Form", "Diagnose"))
         self.btnDashboard.setText(_translate("Form", "Dashboard"))
         self.btnViewRecs.setText(_translate("Form", "View Previous Records"))
+        self.btnReset.setText(_translate("Form", "Reset"))
         self.label_3.setText(_translate("Form", "Diagnosis"))
         self.label_2.setText(_translate("Form", "Name"))
         self.label_5.setText(_translate("Form", "Gender"))
@@ -487,13 +496,20 @@ class DiagnosisWindow(object):
 
         df = pd.read_csv('records.csv')
         status = df["Diabetic_retinopathy_status"].values[0]
-        grade = df["Diabetic_retinopathy_grade"].values[0]
+        grade = str(df["Diabetic_retinopathy_grade"].values[0])
         severity = df["Severity"].values[0]
-        # print(status)
-        self.txtDr.setText(df["Diabetic_retinopathy_status"].values[0])
-        self.txtGrade.setText(df["Diabetic_retinopathy_grade"].values[0])
-        self.txtSeverity.setText(df["Severity"].values[0])
+        print(status)
+        print(grade)
+        print(severity)
+        self.txtDr.setText(status)
+        self.txtGrade.setText(grade)
+        self.txtSeverity.setText(severity)
         os.remove("records.csv")
+
+    def btnReset_clicked(self):
+        self.txtDr.clear()
+        self.txtGrade.clear()
+        self.txtSeverity.clear()
 
 if __name__ == "__main__":
     import sys

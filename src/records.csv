@@ -1,2 +1,0 @@
-Patient_ID,Name,Gender,Age,image_name,density_of_blood_vessels,no_of_microaneurysms,no_of_haemorrhages,Diabetic_retinopathy_status,Diabetic_retinopathy_grade,Severity
-2525,Test 4,Others,25,IDRiD_038.jpg,0.053365955292009055,3,1,No,0,Normal
