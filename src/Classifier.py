@@ -12,7 +12,7 @@ from sklearn.metrics import classification_report
 class Classifier:
 
     def training(self):
-        df = pd.read_csv('C:/Users/Jenish Tamrakar/Desktop/DR/training_sample1.csv')
+        df = pd.read_csv('training_sample1.csv')
 
         # for plot
         nodr_df = df[df['Retinopathy grade'] == 0]
