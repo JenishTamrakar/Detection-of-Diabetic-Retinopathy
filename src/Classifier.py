@@ -13,12 +13,6 @@ class Classifier:
 
     def training(self):
         df = pd.read_csv('C:/Users/Jenish Tamrakar/Desktop/DR/training_sample1.csv')
-        # print(df.tail())
-        # print(df.shape)
-        # print(df.size)
-        # print(df.count())
-        # print(df['Retinopathy grade'].value_counts())
-
 
         # for plot
         nodr_df = df[df['Retinopathy grade'] == 0]
@@ -26,27 +20,21 @@ class Classifier:
         moderate_df = df[df['Retinopathy grade'] == 2]
         severe_df = df[df['Retinopathy grade'] == 3]
         vsevere_df = df[df['Retinopathy grade'] == 4]
-
         axes = nodr_df.plot(kind='scatter', x='no_of_haemorrhages', y='no_of_microaneurysms', color='yellow', label='No Diabetic Retinopathy')
         mild_df.plot(kind='scatter', x='no_of_haemorrhages', y='no_of_microaneurysms', color='black', label='Mild Diabetic Retinopathy', ax=axes)
         moderate_df.plot(kind='scatter', x='no_of_haemorrhages', y='no_of_microaneurysms', color='green', label='Moderate Diabetic Retinopathy', ax=axes)
         severe_df.plot(kind='scatter', x='no_of_haemorrhages', y='no_of_microaneurysms', color='blue', label='Severe Diabetic Retinopathy', ax=axes)
         vsevere_df.plot(kind='scatter', x='no_of_haemorrhages', y='no_of_microaneurysms', color='red', label='Very Severe Diabetic Retinopathy', ax=axes)
-
         # displaying plot
         # plt.scatter(axes)
         # plt.show()
-        # print(df.dtypes)
 
-        # print(df.columns)
         # selecting the relavant columns of the dataframe for classification
         relevant_df = df[['density_of_blood_vessels', 'no_of_haemorrhages', 'no_of_microaneurysms']]
-        # print(relevant_df.columns)
 
         # converting the dataframe into numpy array for classification
         X = np.asarray(relevant_df)                # multidimensional data
         y = np.asarray(df['Retinopathy grade'])    # 1D data
-
 
         # dividing into training set and testing set- 80% for training and 20% for testing
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state=4)
@@ -61,11 +49,9 @@ class Classifier:
 
         # modelling the SVM Classifier
         classifier = svm.SVC(kernel='linear', gamma='auto', C=2)
-        # classifier = svm.SVC()
 
         # training
         classifier.fit(X_train, y_train)
-        # print(classifier.fit(X_train, y_train))
 
         # getting data stored in csv for detection and prediction of DR from the image input from the user
         df1 = pd.read_csv('records.csv')
@@ -121,14 +107,6 @@ class Classifier:
 
     def main(self):
         cl.training()
-        # df = pd.read_csv('records.csv')
-        # relevant_df = df[['density_of_blood_vessels', 'no_of_haemorrhages', 'no_of_microaneurysms']]
-        # X = np.asarray(relevant_df)
-
-        # testing
-        # y_predicted = classifier.predict(X)
-
-        # print(y_predicted)
 
 if __name__ == "__main__":
     cl = Classifier()

@@ -455,11 +455,7 @@ class DiagnosisWindow(object):
         self.gender = self.comboBox.currentText()
         self.age = self.txtAge.text()
         self.filePath = self.txtImage.text()
-        # print("Patient ID: ", self.pid)
-        # print("Name: ", self.name)
-        # print("Gender: ", self.gender)
-        # print("Age: ", self.age)
-        # print(self.filePath)
+
         if(self.pid != '' and  self.name != '' and self.age != '' and self.filePath != ''):
             # adding data entered to a dataframe and converting the dataframe into a csv file
             df = pd.DataFrame({'Patient_ID': [self.pid], 'Name': [self.name], 'Gender': [self.gender], 'Age': [self.age], 'filepath': [self.filePath]})
@@ -499,9 +495,9 @@ class DiagnosisWindow(object):
         status = df["Diabetic_retinopathy_status"].values[0]
         grade = str(df["Diabetic_retinopathy_grade"].values[0])
         severity = df["Severity"].values[0]
-        print(status)
-        print(grade)
-        print(severity)
+        # print(status)
+        # print(grade)
+        # print(severity)
         self.txtDr.setText(status)
         self.txtGrade.setText(grade)
         self.txtSeverity.setText(severity)

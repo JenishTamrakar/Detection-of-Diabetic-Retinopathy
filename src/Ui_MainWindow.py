@@ -36,8 +36,10 @@ class Ui_MainWindow(object):
         self.gridLayout_2 = QtWidgets.QGridLayout(self.frame_2)
         self.gridLayout_2.setObjectName("gridLayout_2")
         self.btnExit = QtWidgets.QPushButton(self.frame_2)
-        # button clicked
+
+        # exit button clicked event
         self.btnExit.clicked.connect(self.btnExit_clicked)
+
         self.btnExit.setMaximumSize(QtCore.QSize(16777215, 50))
         font = QtGui.QFont()
         font.setFamily("Times New Roman")
@@ -161,6 +163,7 @@ class Ui_MainWindow(object):
         self.window = QtWidgets.QWidget()
         self.ui = DiagnosisWindow()
         self.ui.setupUi(self.window)
+        # MainWindow.close()
         self.window.show()
 
     def openViewRecordsWindow(self):
@@ -168,6 +171,7 @@ class Ui_MainWindow(object):
         self.ui = ViewRecordsWindow()
         self.ui.setupUi(self.window)
         self.window.show()
+        # MainWindow.close()
         self.ui.loadData()
 
     def btnExit_clicked(self):

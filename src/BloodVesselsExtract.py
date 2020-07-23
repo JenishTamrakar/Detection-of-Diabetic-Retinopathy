@@ -11,16 +11,12 @@ class BloodVesselsExtract:
 
     def extract_bv(self, image):
         b, green_fundus, r = cv2.split(image)
-        # cv2.imshow('gr', green_fundus)
-        # cv2.waitKey(0)
-        # cv2.destroyAllWindows()
+
         clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8, 8))
         contrast_enhanced_green_fundus = clahe.apply(green_fundus)
-        # contrast_enhanced_green_fundus = image
 
         # applying alternate sequential filtering (3 times closing opening)
-        r1 = cv2.morphologyEx(contrast_enhanced_green_fundus, cv2.MORPH_OPEN,
-                            cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (5, 5)), iterations=1)
+        r1 = cv2.morphologyEx(contrast_enhanced_green_fundus, cv2.MORPH_OPEN, cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (5, 5)), iterations=1)
         R1 = cv2.morphologyEx(r1, cv2.MORPH_CLOSE, cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (5, 5)), iterations=1)
         r2 = cv2.morphologyEx(R1, cv2.MORPH_OPEN, cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (11, 11)), iterations=1)
         R2 = cv2.morphologyEx(r2, cv2.MORPH_CLOSE, cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (11, 11)), iterations=1)
@@ -58,9 +54,6 @@ class BloodVesselsExtract:
 
         final_image = cv2.bitwise_and(fundus_eroded, fundus_eroded, mask=xmask)
 
-        # cv2.imshow('fi', final_image)
-        # cv2.waitKey(0)
-        # cv2.destroyAllWindows()
         blood_vessels = final_image
         return blood_vessels
 
@@ -81,16 +74,11 @@ class BloodVesselsExtract:
                 # Write the updated row / list to the output file
                 csv_writer.writerow(row)
 
-
     def main(self):
-        # pathFolder = "D:/DR_Datasets/CLAHE_images/"
         current_directory = os.getcwd()
         pathFolder = current_directory + "\images/"
         filesArray = [x for x in os.listdir(pathFolder) if os.path.isfile(os.path.join(pathFolder, x))]
 
-        # destinationFolder = "D:/DR_Datasets/Blood_vessels/"
-        # if not os.path.exists(destinationFolder):
-        #     os.mkdir(destinationFolder)
         lst = []
         for file_name in filesArray:
             file_name_no_extension = os.path.splitext(file_name)[0]

@@ -216,8 +216,7 @@ class ViewRecordsWindow(object):
         df = df.drop("density_of_blood_vessels", axis=1)
         df = df.drop("no_of_microaneurysms", axis=1)
         df = df.drop("no_of_haemorrhages", axis=1)
-        # print(df.shape[0])
-        # print(df.iloc[0])
+
         # headers = list(df)
         self.tableWidget.setRowCount(df.shape[0])
         self.tableWidget.setColumnCount(df.shape[1])

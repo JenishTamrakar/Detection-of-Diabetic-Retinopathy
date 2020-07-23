@@ -4,18 +4,17 @@ import numpy as np
 import os
 import pandas as pd
 
+
 class MaExtract:
     def adjust_gamma(self, image, gamma=1.0):
         table = np.array([((i / 255.0) ** gamma) * 255
                           for i in np.arange(0, 256)]).astype("uint8")
         return cv2.LUT(image, table)
 
-
     def extract_ma(self, image):
         r, green, b = cv2.split(image)
         comp = 255 - green
-        # clahe = cv2.createCLAHE(clipLimit=5.0, tileGridSize=(8, 8))
-        # histe = clahe.apply(comp)
+
         mex = MaExtract()
         adjustImage = mex.adjust_gamma(comp, gamma=3)
         comp = 255 - adjustImage
@@ -30,9 +29,8 @@ class MaExtract:
         kernel2 = np.ones((9, 9), np.uint8)
         tophat = cv2.morphologyEx(thresh2, cv2.MORPH_TOPHAT, kernel2)
         kernel3 = np.ones((7, 7), np.uint8)
-        opening = cv2.morphologyEx(tophat, cv2.MORPH_OPEN, kernel3)
-        return opening
-
+        ma_image = cv2.morphologyEx(tophat, cv2.MORPH_OPEN, kernel3)
+        return ma_image
 
     def main(self):
         # detect the current working directory and print it
@@ -64,13 +62,14 @@ class MaExtract:
         # print(no_of_mas)
         print("Number of MAs: {}".format(len(xcnts)))
 
-        df = pd.read_csv(current_directory +'/records.csv')
+        df = pd.read_csv(current_directory + '/records.csv')
         df["no_of_microaneurysms"] = no_of_mas
         df.to_csv("records.csv", index=False)
         img = cv2.resize(ma, (360, 360))
         cv2.imshow('MA', img)
         cv2.waitKey(0)
         # cv2.destroyAllWindows()
+
 
 if __name__ == "__main__":
     mex = MaExtract()
